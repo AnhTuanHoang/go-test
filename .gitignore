@@ -1,0 +1,11 @@
+.idea/
+*.iml
+*.iws
+*.ipr
+*.ids
+*.orig
+*.tmp
+*.tar.gz
+*.mp4
+*.png
+*.jpg
