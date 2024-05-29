@@ -6,17 +6,11 @@ import (
 	"context"
 	"crypto/aes"
 	"crypto/cipher"
-	"crypto/sha1"
 	"crypto/sha256"
-	"encoding/base64"
 	"encoding/hex"
 	"fmt"
-	"github.com/gonum/matrix/mat64"
-	"github.com/google/uuid"
-	"github.com/kballard/go-shellquote"
 	"github.com/spiral/goridge"
 	"golang.org/x/crypto/pbkdf2"
-	"golang.org/x/sys/unix"
 	"image"
 	"image/jpeg"
 	"io"
@@ -24,26 +18,16 @@ import (
 	"math"
 	"math/rand"
 	"net"
-	"net/http"
 	"net/rpc"
 	"os"
 	"os/exec"
-	"os/signal"
 	"path/filepath"
 	"reflect"
-	"regexp"
 	"strconv"
 	"strings"
-	"syscall"
-	"test-func/pkg/ffprobe"
-	"test-func/pkg/gocron"
-	digest_auth_client "test-func/pkg/httpdigest"
-	"test-func/pkg/log/syslog"
-	"test-func/pkg/onvif"
 	wsdiscovery "test-func/pkg/onvif-20/ws-discovery"
 	"test-func/pkg/utils"
 	"time"
-	"unsafe"
 )
 
 const (
@@ -52,32 +36,6 @@ const (
 	MB = 1024 * KB
 	GB = 1024 * MB
 )
-
-type EventArgs struct {
-	CameraId    string    `json:"camera_id"`
-	EventCode   string    `json:"event_code"`
-	TriggerTime time.Time `json:"trigger_time"`
-	Status      string    `json:"status"`
-	EquipIndex  uint8     `json:"equip_index"`
-}
-
-var OUTPUT_PATH = "output_file"
-var INPUT_PATH = "input_file"
-var GET_PARAM_VIVOTEK  = "http://%s:%s/cgi-bin/anonymous/getparam.cgi?%s"
-var CAMERA_MODEL_PARAM = "system_info"
-var FileMode os.FileMode
-
-var MeomeoSyslog *syslog.Writer
-var MeomeoSyslog2 *syslog.Writer
-
-var scheduler *gocron.Scheduler
-
-type JackPortState struct {
-	DeviceID  string `json:"device_id"`
-	EventCode string `json:"event_code"`
-	Status    bool   `json:"status"`
-	EquipIdx  uint8  `json:"equip_idx"`
-}
 
 func main() {
 
